@@ -4,13 +4,13 @@ version = "0.1.0"
 edition.workspace = true
 rust-version.workspace = true
 links = "sane"
-description = "Raw FFI bindings to libsane, the SANE (Scanner Access Now Easy) scanner library"
+description = "Raw FFI bindings to libsane, the SANE (Scanner Access Now Easy) scanner API, generated with bindgen and linked through pkg-config"
 license.workspace = true
 repository.workspace = true
 documentation = "https://docs.rs/sane-sys"
 readme = "README.md"
-keywords = ["sane", "scanner", "scan", "ffi"]
-categories = ["external-ffi-bindings", "hardware-support", "multimedia::images"]
+keywords = ["sane", "scanner", "scanning", "ffi", "bindings"]
+categories = ["external-ffi-bindings", "hardware-support", "os::unix-apis"]
 # `include/` holds a copy of sane.h, used only on docs.rs (see build.rs).
 include = ["/build.rs", "/wrapper.h", "/include/**", "/src/**", "/tests/**", "/README.md", "/CHANGELOG.md", "/LICENSE-*"]
 

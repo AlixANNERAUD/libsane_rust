@@ -3,13 +3,13 @@ name = "libsane"
 version = "0.1.0"
 edition.workspace = true
 rust-version.workspace = true
-description = "Safe, idiomatic bindings to SANE (Scanner Access Now Easy): list scanners, set options and scan"
+description = "Scan documents and images from Rust: safe bindings to SANE (Scanner Access Now Easy) for flatbed scanners, document feeders and multifunction printers on Linux, BSD and macOS"
 license.workspace = true
 repository.workspace = true
 documentation = "https://docs.rs/libsane"
 readme = "README.md"
-keywords = ["sane", "scanner", "scan", "image", "document"]
-categories = ["api-bindings", "hardware-support", "multimedia::images"]
+keywords = ["sane", "scanner", "scanning", "document", "image"]
+categories = ["api-bindings", "hardware-support", "multimedia::images", "os::unix-apis"]
 include = ["/src/**", "/tests/**", "/examples/**", "/README.md", "/CHANGELOG.md", "/LICENSE-*"]
 
 [features]

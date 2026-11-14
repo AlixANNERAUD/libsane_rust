@@ -1,5 +1,7 @@
-//! Safe, idiomatic bindings to [SANE (Scanner Access Now Easy)](http://www.sane-project.org/),
-//! the scanner library of Linux and other Unix systems.
+//! Scan documents and images from Rust: safe, idiomatic bindings to
+//! [SANE (Scanner Access Now Easy)](http://www.sane-project.org/),
+//! the scanner API of Linux, the BSDs and macOS, for flatbed scanners,
+//! document feeders and multifunction printers.
 //!
 //! ```no_run
 //! use libsane::{Sane, well_known};

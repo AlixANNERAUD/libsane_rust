@@ -2,3 +2,6 @@
 /mise.local.toml
 /coverage.lcov
 *.png
+
+# Images shown in the READMEs.
+!/assets/*.png
