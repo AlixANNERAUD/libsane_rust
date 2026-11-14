@@ -1,4 +1,4 @@
-# libsane — scan documents and images from Rust
+# libsane: scan documents and images from Rust
 
 [![CI](https://github.com/AlixANNERAUD/libsane_rust/actions/workflows/ci.yml/badge.svg)](https://github.com/AlixANNERAUD/libsane_rust/actions/workflows/ci.yml)
 [![codecov](https://codecov.io/gh/AlixANNERAUD/libsane_rust/graph/badge.svg)](https://codecov.io/gh/AlixANNERAUD/libsane_rust)
