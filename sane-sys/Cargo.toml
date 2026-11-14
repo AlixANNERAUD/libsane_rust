@@ -15,7 +15,7 @@ categories = ["external-ffi-bindings", "hardware-support", "os::unix-apis"]
 include = ["/build.rs", "/wrapper.h", "/include/**", "/src/**", "/tests/**", "/README.md", "/CHANGELOG.md", "/LICENSE-*"]
 
 [build-dependencies]
-bindgen = "0.72"
+bindgen = "0.73"
 pkg-config = "0.3.30"
 
 [package.metadata.docs.rs]
