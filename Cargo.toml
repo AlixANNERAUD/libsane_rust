@@ -1,6 +1,6 @@
 [workspace]
 resolver = "3"
-members = ["sane-sys"]
+members = ["sane-sys", "libsane"]
 
 [workspace.package]
 edition = "2024"
