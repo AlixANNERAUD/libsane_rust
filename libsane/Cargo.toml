@@ -10,7 +10,7 @@ documentation = "https://docs.rs/libsane"
 readme = "README.md"
 keywords = ["sane", "scanner", "scan", "image", "document"]
 categories = ["api-bindings", "hardware-support", "multimedia::images"]
-include = ["/src/**", "/tests/**", "/examples/**", "/README.md", "/LICENSE-*"]
+include = ["/src/**", "/tests/**", "/examples/**", "/README.md", "/CHANGELOG.md", "/LICENSE-*"]
 
 [features]
 ## Converts scanned frames to `image::DynamicImage`.

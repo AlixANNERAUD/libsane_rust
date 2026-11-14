@@ -1,0 +1,93 @@
+# Development tools and tasks. `mise install` sets up the toolchain,
+# `mise bootstrap packages apply` the system packages, then `mise run <task>`
+# (or `mise tasks` to list them). Tasks mirror CI, including
+# `RUSTFLAGS=-D warnings`.
+min_version = "2026.9.2"
+
+[tools]
+# `mr_boxington` routes Cargo through mbx, a shared build cache.
+rust = { version = "stable", components = "rustfmt,clippy,llvm-tools", mr_boxington = true }
+mr-boxington = "latest"
+# Coverage (`mise run coverage`).
+"aqua:taiki-e/cargo-llvm-cov" = "latest"
+
+# libsane with its headers and pkg-config file (libsane1 also ships SANE's
+# virtual `test` backend, which the tests scan with), and libclang for
+# bindgen.
+[bootstrap.packages]
+"apt:libsane-dev" = { os = "linux" }
+"apt:libclang-dev" = { os = "linux" }
+"apt:pkg-config" = { os = "linux" }
+
+[tasks.fmt]
+description = "Check formatting"
+run = "cargo fmt --all --check"
+
+[tasks.clippy]
+description = "Run clippy with default and all features"
+env.RUSTFLAGS = "-D warnings"
+run = [
+  "cargo clippy --workspace --all-targets",
+  "cargo clippy --workspace --all-targets --all-features",
+]
+
+[tasks.test]
+description = "Run the tests (against SANE's test backend) with default and all features"
+env.RUSTFLAGS = "-D warnings"
+run = [
+  "cargo test --workspace",
+  "cargo test --workspace --all-features",
+]
+
+[tasks.example]
+description = "List the test backend's devices and scan one page to target/scan.png"
+env.RUSTFLAGS = "-D warnings"
+# Only the test backend: no scanner needed.
+env.SANE_CONFIG_DIR = "{{config_root}}/libsane/tests/sane.d"
+run = "cargo run -p libsane --example scan_to_png --features image -- test:0 target/scan.png"
+
+[tasks.miri]
+description = "Run the unit tests under Miri (the FFI calls themselves are covered by the tests against the test backend)"
+tools = { rust = { version = "nightly", components = "miri,rust-src" } }
+env.CARGO_TARGET_DIR = "target/miri"
+run = "cargo miri test -p sane-sys -p libsane --lib --all-features"
+
+[tasks.doc]
+description = "Build the documentation as docs.rs does: from the vendored sane.h, without libsane"
+env = { DOCS_RS = "1", RUSTDOCFLAGS = "-D warnings", CARGO_TARGET_DIR = "target/doc" }
+run = "cargo doc --no-deps --workspace --all-features"
+
+[tasks.coverage]
+description = "Coverage of the workspace, written to coverage.lcov"
+# llvm-cov reads every binary of the target directory and cannot parse mbx's
+# build-script wrapper: turn it off.
+env.MBX_BUILD_SCRIPT_EXECUTION = "false"
+run = "cargo llvm-cov --workspace --all-features --lcov --output-path coverage.lcov"
+
+[tasks.package]
+description = "Package both crates as crates.io would, and build each one from its package"
+env.CARGO_TARGET_DIR = "target/package"
+run = "cargo package --workspace"
+
+[tasks.msrv]
+description = "Check the workspace with the minimum Rust version"
+# Keep in sync with `rust-version` in the root Cargo.toml.
+tools = { rust = "1.85" }
+env.RUSTFLAGS = "-D warnings"
+# A separate target directory: another compiler version invalidates the
+# regular build.
+env.CARGO_TARGET_DIR = "target/msrv"
+run = [
+  "rustc --version",
+  "cargo check --workspace --all-targets --all-features",
+]
+
+[tasks.check]
+description = "Checks to run before pushing"
+# Sequential: concurrent builds in the same target directory race under mbx.
+run = [
+  { task = "fmt" },
+  { task = "clippy" },
+  { task = "test" },
+  { task = "example" },
+]

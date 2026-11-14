@@ -12,7 +12,7 @@ readme = "README.md"
 keywords = ["sane", "scanner", "scan", "ffi"]
 categories = ["external-ffi-bindings", "hardware-support", "multimedia::images"]
 # `include/` holds a copy of sane.h, used only on docs.rs (see build.rs).
-include = ["/build.rs", "/wrapper.h", "/include/**", "/src/**", "/tests/**", "/README.md", "/LICENSE-*"]
+include = ["/build.rs", "/wrapper.h", "/include/**", "/src/**", "/tests/**", "/README.md", "/CHANGELOG.md", "/LICENSE-*"]
 
 [build-dependencies]
 bindgen = "0.72"

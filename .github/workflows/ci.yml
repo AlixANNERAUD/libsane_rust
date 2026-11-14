@@ -1,0 +1,51 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  fmt:
+    name: Format
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: jdx/mise-action@v4
+      - run: mise run fmt
+
+  # Every task builds sane-sys, which needs libsane-dev, pkg-config and
+  # libclang (`[bootstrap.packages]` of mise.toml).
+  check:
+    name: ${{ matrix.task }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        task: [clippy, test, example, miri, doc, package, msrv]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: jdx/mise-action@v4
+      - name: Install system packages
+        run: sudo apt-get update && mise bootstrap packages apply --yes
+      - uses: jdx/mr-boxington-action@v1
+        with:
+          cache-key-suffix: ${{ matrix.task }}
+      - run: mise run ${{ matrix.task }}
+      - name: Upload the scanned page
+        if: matrix.task == 'example'
+        uses: actions/upload-artifact@v4
+        with:
+          name: scan
+          path: target/scan.png
