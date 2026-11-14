@@ -1,0 +1,31 @@
+# Weekly dependency updates. Titles follow Conventional Commits
+# (`build(deps): …`, `ci(deps): …`) so they pass the pull request title check
+# and land in the changelog's Miscellaneous section. Tools pinned in mise.toml
+# are not covered: Dependabot does not read mise configuration. The `msrv` CI
+# job catches updates that need a newer Rust than `rust-version`.
+version: 2
+updates:
+  - package-ecosystem: cargo
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: build
+      include: scope
+    groups:
+      minor-and-patch:
+        update-types: [minor, patch]
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    commit-message:
+      prefix: ci
+      include: scope
+    groups:
+      actions:
+        patterns: ["*"]
